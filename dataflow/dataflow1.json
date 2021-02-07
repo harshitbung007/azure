@@ -1,0 +1,49 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "customers",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
+				},
+				{
+					"dataset": {
+						"referenceName": "transactions",
+						"type": "DatasetReference"
+					},
+					"name": "transactions"
+				},
+				{
+					"dataset": {
+						"referenceName": "productInfo",
+						"type": "DatasetReference"
+					},
+					"name": "Products"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "target",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "Join2"
+				}
+			],
+			"script": "source(output(\n\t\tcustomer_Id as string,\n\t\tDOB as string,\n\t\tGender as string,\n\t\tcity_code as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> customers\nsource(output(\n\t\ttransaction_id as string,\n\t\tcust_id as string,\n\t\ttran_date as string,\n\t\tprod_subcat_code as string,\n\t\tprod_cat_code as string,\n\t\tQty as string,\n\t\tRate as string,\n\t\tTax as string,\n\t\ttotal_amt as string,\n\t\tStore_type as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> transactions\nsource(output(\n\t\tprod_cat_code as string,\n\t\tprod_cat as string,\n\t\tprod_sub_cat_code as string,\n\t\tprod_subcat as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> Products\ncustomers, transactions join(customer_Id == cust_id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1, Products join(transactions@prod_cat_code == Products@prod_cat_code\n\t&& prod_subcat_code == prod_sub_cat_code,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join2\nJoin2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}

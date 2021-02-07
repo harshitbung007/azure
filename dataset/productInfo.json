@@ -1,0 +1,41 @@
+{
+	"name": "productInfo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "prod_cat_info.csv",
+				"folderPath": "data2",
+				"container": "data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "prod_cat_code",
+				"type": "String"
+			},
+			{
+				"name": "prod_cat",
+				"type": "String"
+			},
+			{
+				"name": "prod_sub_cat_code",
+				"type": "String"
+			},
+			{
+				"name": "prod_subcat",
+				"type": "String"
+			}
+		]
+	}
+}
