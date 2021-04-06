@@ -1,0 +1,9 @@
+{
+	"name": "adfls-dp200",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3d136460-9b87-46c2-9c14-896a2ac89748",
+		"tenantId": "1d03b506-6008-44c8-b334-a32d8d67ed36"
+	}
+}
